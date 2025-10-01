@@ -12,7 +12,7 @@ interface Post {
     createdAt: string;
 }
 
-export default function detailDashboard () {
+export default function DetailDashboard () {
     const {slug} = useParams() as {slug:string};
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
