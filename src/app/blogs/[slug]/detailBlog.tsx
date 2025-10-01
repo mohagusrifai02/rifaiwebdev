@@ -20,7 +20,6 @@ export default function SingleBlog () {
     const {slug} = useParams() as {slug:string};
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
-    const [posts, setPosts] = useState<Post[]>([]);
 
     useEffect(()=>{
         fetch(`/api/posts/${slug}`)
