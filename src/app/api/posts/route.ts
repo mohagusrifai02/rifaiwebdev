@@ -9,7 +9,8 @@ export async function GET(req: Request){
         const tag = searchParams.get("tag");
         const publishedOnly = searchParams.get('publish') === "true";
 
-        const filter: any = {};
+        //const filter: any = {};
+        const filter: Record<string, unknown> = {};
         if(tag) filter.tags = tag;
         if(publishedOnly) filter.published = true;
 
@@ -36,10 +37,13 @@ export async function POST(req: Request){
 
         const post = await Post.create(body);
         return NextResponse.json({ ok:true, data:post}, { status:201});
-    } catch (err:any) {
+    } catch (err: unknown) {
         console.error(err);
-        const message = err?.code === 11000 ? 'Slug already exists' : 'failed to create post';
+        const message =
+            typeof err === "object" && err !== null && "code" in err && (err as any).code === 11000
+            ? "Slug already exists"
+            : "failed to create post";
 
-        return NextResponse.json({ ok:false, error:message }, { status:500 });
-    }
+        return NextResponse.json({ ok: false, error: message }, { status: 500 });
+        }
 }

@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <div className="container-home">
         <div className="title">
-          <h4>Hello Everyone, I'm Agus rifai</h4>
+          <h4>Hello Everyone, I am Agus rifai</h4>
           <h1 style={{color:'rgb(13, 168, 13)'}}>
             <TypingText text="I'm a Web Developer, experience in Next.js" speed={80}/>
           </h1>
