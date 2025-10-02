@@ -1,3 +1,5 @@
+"use client";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFacebook, faWhatsapp, faYoutube } from "@fortawesome/free-brands-svg-icons"
 
