@@ -42,7 +42,7 @@ export default function SingleBlog () {
     return(
         <>
             <div className="container-single">
-                <Link href='/' className="link-kembali">&laquo;Kembali</Link>
+                <Link href='/blogs' className="link-kembali">&laquo;Kembali</Link>
                 <h1>{post.title}</h1>
                 <p>by {post.author} - {new Date(post.createdAt).toLocaleDateString()}</p>
                 <p style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: escapeHTML(post.body).replace(/\n/g, "<br />") }} />
