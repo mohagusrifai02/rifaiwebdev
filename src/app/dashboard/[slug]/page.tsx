@@ -29,12 +29,19 @@ export default function DetailDashboard () {
     if(loading) return <p>Loading ... </p>;
     if(!post) return <p>postingan tidak ditemukan</p>;
 
+    function escapeHTML(str: string) {
+        return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
     return(
         <>
             <div className="container-detail-dashboard">
                 <h1>{post.title}</h1>
                 <p>by {post.author} - {new Date(post.createdAt).toLocaleDateString()}</p>
-                <p>{post.body}</p>
+                <p>{escapeHTML(post.body)}</p>
             </div>
         </>
     )

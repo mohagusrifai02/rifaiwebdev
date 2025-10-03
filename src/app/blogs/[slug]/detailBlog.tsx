@@ -32,7 +32,12 @@ export default function SingleBlog () {
     if(loading) return <p>Loading ... </p>;
     if(!post) return <p>postingan tidak ditemukan</p>;
 
-    
+    function escapeHTML(str: string) {
+        return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }    
 
     return(
         <>
@@ -40,7 +45,7 @@ export default function SingleBlog () {
                 <Link href='/' className="link-kembali">&laquo;Kembali</Link>
                 <h1>{post.title}</h1>
                 <p>by {post.author} - {new Date(post.createdAt).toLocaleDateString()}</p>
-                <p dangerouslySetInnerHTML={{ __html: post.body.replace(/\n/g, "<br />") }} />
+                <p style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: escapeHTML(post.body).replace(/\n/g, "<br />") }} />
             </div>
         </>
     )
