@@ -13,10 +13,10 @@ export async function generateMetadata({params} : {params: {slug: string}}): Pro
 
     return{
         title:post.data.title,
-        description:post.data.penerimaan,
+        description:post.data.body,
         openGraph:{
             title:post.data.title,
-            description:post.data.penerimaan,
+            description:post.data.body,
         }
     }    
     } catch (error) {
