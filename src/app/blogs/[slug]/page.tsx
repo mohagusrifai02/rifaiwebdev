@@ -3,9 +3,10 @@ import SingleBlog from "./detailBlog";
 
 export async function generateMetadata({params} : {params: {slug: string}}): Promise<Metadata>{
     try {
-         const { slug } = await params;
+         const { slug } = params;
          const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`, {
-                next: { revalidate: 10 }
+                next: { revalidate: 10 },
+                cache: "no-store"
                 });
         const post = await res.json();
         console.log("Post data:", post);
