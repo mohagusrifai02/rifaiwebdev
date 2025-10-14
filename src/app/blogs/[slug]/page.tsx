@@ -12,11 +12,11 @@ export async function generateMetadata({params} : {params: {slug: string}}): Pro
         console.log("Post data:", post);
 
     return{
-        title:post.data.title,
-        description:post.data.body,
+        title:post.title,
+        description:post.body,
         openGraph:{
-            title:post.data.title,
-            description:post.data.body,
+            title:post.title,
+            description:post.body,
         }
     }    
     } catch (error) {
