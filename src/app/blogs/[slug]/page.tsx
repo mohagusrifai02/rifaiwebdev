@@ -19,7 +19,7 @@ export async function generateMetadata({params} : {params: {slug: string}}): Pro
             description:post.data.body,
             images: [
                 {
-                url: `https://www.rifaiwebdev.net/images/development_compressed_500kb.jpg`,
+                url: `https://www.rifaiwebdev.net/development_compressed_500kb.jpg`,
                 width: 1200,
                 height: 630,
                 alt: post.data.title,
