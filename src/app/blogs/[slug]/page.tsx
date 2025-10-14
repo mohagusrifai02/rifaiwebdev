@@ -17,8 +17,16 @@ export async function generateMetadata({params} : {params: {slug: string}}): Pro
         openGraph:{
             title:post.data.title,
             description:post.data.body,
+            images: [
+                {
+                url: `https://www.rifaiwebdev.net/images/development_compressed_500kb.jpg`,
+                width: 1200,
+                height: 630,
+                alt: post.data.title,
+                },
+                ],
+            }
         }
-    }    
     } catch (error) {
         console.error("Failde to generated metadata:", error);  
         return{
