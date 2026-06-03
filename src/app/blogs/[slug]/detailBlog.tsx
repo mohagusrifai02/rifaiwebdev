@@ -30,7 +30,7 @@ export default function SingleBlog ({ initialPost }: { initialPost: Post }) {
 
     return(
         <>
-            <div className="container-single" style={{ marginTop: '100px' }}>
+            <div className="container-single">
                 <Link href='/blogs' className="link-kembali">&laquo;Kembali</Link>
                 {post.coverImage && (
                     <Image 
