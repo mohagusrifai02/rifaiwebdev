@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,22 +15,10 @@ interface Post {
 }
 
 
+export default function SingleBlog ({ initialPost }: { initialPost: Post }) {
+    const [post] = useState<Post>(initialPost);
+    const [loading] = useState(false);
 
-export default function SingleBlog () {
-    const {slug} = useParams() as {slug:string};
-    const [post, setPost] = useState<Post | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(()=>{
-        fetch(`/api/posts/${slug}`)
-        .then((res)=> res.json())
-        .then((data)=> {
-            if(data.success) setPost(data.data);
-        })
-        .finally(()=> setLoading(false))
-    }, [slug]);
-
-    if(loading) return <p>Loading ... </p>;
     if(!post) return <p>postingan tidak ditemukan</p>;
 
     function escapeHTML(str: string) {
@@ -43,7 +30,7 @@ export default function SingleBlog () {
 
     return(
         <>
-            <div className="container-single">
+            <div className="container-single" style={{ marginTop: '100px' }}>
                 <Link href='/blogs' className="link-kembali">&laquo;Kembali</Link>
                 {post.coverImage && (
                     <Image 

@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import SingleBlog from "./detailBlog";
 import Image from "next/image";
 
-export async function generateMetadata({params} : {params: {slug: string}}): Promise<Metadata>{
+export async function generateMetadata({params} : {params: Promise<{slug: string}>}): Promise<Metadata>{
     try {
-         const { slug } = params;
+         const { slug } = await params;
          const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`, {
                 next: { revalidate: 10 },
                 cache: "no-store"
@@ -37,26 +37,15 @@ export async function generateMetadata({params} : {params: {slug: string}}): Pro
     
 }
 
-export default async function Page({params} : {params: {slug: string}}){
-    const { slug } = params;
+export default async function Page({params} : {params: Promise<{slug: string}>}){
+    const { slug } = await params;
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`, {
            next: { revalidate: 10 },
            cache: "no-store"
            });
     const post = await res.json();
 
-    return (
-        <div className="container-single">
-            {post.data?.coverImage && (
-                <Image 
-                    src={post.data.coverImage}
-                    alt={post.data.title}
-                    width={1000}
-                    height={500}
-                    style={{ width: '50%', height: 'auto', borderRadius: '20px', marginTop: '100px' }}
-                />
-            )}
-            <SingleBlog />   
-        </div>
-    )
+    if (!post.success) return <p className="container-single" style={{marginTop:'100px'}}>Postingan tidak ditemukan</p>;
+
+    return <SingleBlog initialPost={post.data} />;
 }
