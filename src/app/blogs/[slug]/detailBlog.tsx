@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 
 interface Post {
@@ -11,6 +12,7 @@ interface Post {
     body:string;
     author:string;
     createdAt: string;
+    coverImage: string;
 }
 
 
@@ -24,7 +26,7 @@ export default function SingleBlog () {
         fetch(`/api/posts/${slug}`)
         .then((res)=> res.json())
         .then((data)=> {
-            if(data.ok) setPost(data.data);
+            if(data.success) setPost(data.data);
         })
         .finally(()=> setLoading(false))
     }, [slug]);
@@ -43,6 +45,16 @@ export default function SingleBlog () {
         <>
             <div className="container-single">
                 <Link href='/blogs' className="link-kembali">&laquo;Kembali</Link>
+                {post.coverImage && (
+                    <Image 
+                        src={post.coverImage}
+                        alt={post.title}
+                        width={1000}
+                        height={500}
+                        priority
+                        style={{ width: '100%', height: 'auto', borderRadius: '20px', marginBottom: '20px' }}
+                    />
+                )}
                 <h1>{post.title}</h1>
                 <p>by {post.author} - {new Date(post.createdAt).toLocaleDateString()}</p>
                 <p style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: escapeHTML(post.body).replace(/\n/g, "<br />") }} />
