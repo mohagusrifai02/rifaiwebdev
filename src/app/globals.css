@@ -129,7 +129,7 @@ nav ul li a{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 200px;
+  margin-top: 120px; /* Mengurangi margin atas agar tidak terlalu tinggi */
   position: relative;
 }
 
@@ -138,11 +138,11 @@ nav ul li a{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 20px;
+  align-items: center; /* Tetap center untuk logo dan teks */
+  gap: 15px; /* Mengurangi jarak antar elemen */
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
   color: #171717;
-  padding: 60px 40px;
+  padding: 40px 30px; /* Mengurangi padding agar kartu tidak terlalu tebal */
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
   z-index: 1;
   border-radius: 40px;
@@ -209,12 +209,10 @@ nav ul li a{
 .container-home .title button:hover{
   background-color: rgb(9, 32, 100);
 }
-.container-home .title h4{
-  height: 10vh;
-}
-.container-home .title h1{
-  text-align: center;
-  height: 20vh;
+.container-home .title h4,
+.container-home .title h1 {
+  height: auto; /* Menghapus tinggi tetap agar menyesuaikan konten */
+  text-align: center; /* Tetap rata tengah */
 }
 
 @media screen and (max-width:600px){
