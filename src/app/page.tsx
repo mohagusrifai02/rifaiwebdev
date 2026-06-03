@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import TypingText from "../../components/typingtext";
 import About from "./about/page";
 import Contact from "./contact/page";
+import Image from "next/image";
 import ProjectsPage from "./projects/page";
 import Blog from "./blogs/page";
 
@@ -54,6 +55,13 @@ export default function Home() {
         />
 
         <div className="title">
+          <Image
+            src="/logokupng.png"
+            alt="Logo RifaiWebDev"
+            width={150}
+            height={150}
+            style={{ marginBottom: '20px' }}
+          />
           <h4>Hello Everyone, I am Agus rifai</h4>
           <h1 style={{color:'rgb(13, 168, 13)'}}>
             <TypingText text="I'm a Web Developer, experience in Next.js" speed={80}/>
