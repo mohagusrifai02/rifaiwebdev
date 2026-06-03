@@ -25,21 +25,25 @@ export default function LoginPage(){
     };
 
     return(
-        <form action="" onSubmit={handleSubmit}>
+        <div className="container-login">
+            <form className="login-form" onSubmit={handleSubmit}>
             <h2>Login</h2>
             <input 
                 type="email"
                 placeholder="Email"
                 value = {email}
                 onChange={(e)=> setEmail(e.target.value)}
-                required />
+                required
+            />
             <input 
                 type="password" name="" id="" 
                 placeholder="Kata sandi"
                 value={password}
                 onChange={(e)=> setPassword(e.target.value)}
-                required/>
+                required
+            />
             <button type="submit">Login</button>
         </form>
+        </div>
     )
 }
