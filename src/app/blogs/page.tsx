@@ -11,6 +11,7 @@ interface Post{
     body:string;
     author:string;
     createdAt: string;
+    coverImage: string;
 }
 
 export default function Blog(){
@@ -21,7 +22,7 @@ export default function Blog(){
         fetch('/api/posts')
         .then((res)=> res.json())
         .then((data)=>{
-            if(data.ok) setPosts(data.data);
+            if(data.success) setPosts(data.data);
         })
         .finally(()=> setLoading(false));
     },[]);
@@ -89,6 +90,16 @@ export default function Blog(){
                     <ul className="cards">
                         {posts.map((post)=>(
                             <li key={post._id}>
+                                {post.coverImage && (
+                                    <Image 
+                                        src={post.coverImage}
+                                        alt={post.title}
+                                        width={300}
+                                        height={200}
+                                        style={{ objectFit: 'cover' }}
+                                        className="rounded-lg mb-4"
+                                    />
+                                )}
                                 <h3>{post.title}</h3>
                                 <p>by {post.author} - {''} 
                                     {new Date(post.createdAt).toLocaleDateString("id-ID", {
