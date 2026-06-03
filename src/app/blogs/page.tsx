@@ -85,7 +85,7 @@ export default function Blog(){
                     </ul>
                 </div>
                 <div className="cards-blog">
-                    <h2>All Course</h2>
+                    <h2>All Blog</h2>
                     <ul className="cards">
                         {posts.map((post)=>(
                             <li key={post._id}>

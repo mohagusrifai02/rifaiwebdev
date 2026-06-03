@@ -1,68 +1,47 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "../../../../lib/mongodb";
+import mongoose from "mongoose";
 import Post from "../../../../models/Post";
 
-interface PostFilter {
-  tags?: string;
-  published?: boolean;
-}
-
-interface MongoError {
-  code?: number;
-}
-
-export async function GET(req: Request) {
-  try {
-    await connectDB();
-    const { searchParams } = new URL(req.url);
-    const tag = searchParams.get("tag");
-    const publishedOnly = searchParams.get("publish") === "true";
-
-    const filter: PostFilter = {};
-    if (tag) filter.tags = tag;
-    if (publishedOnly) filter.published = true;
-
-    const posts = await Post.find(filter)
-      .sort({ publishedAt: -1, createdAt: -1 })
-      .limit(50)
-      .lean();
-
-    return NextResponse.json({ ok: true, data: posts });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json(
-      { ok: false, error: "Failed to fetch posts" },
-      { status: 500 }
-    );
+/**
+ * Fungsi bantuan untuk memastikan koneksi ke MongoDB.
+ */
+async function dbConnect() {
+  if (mongoose.connection.readyState >= 1) return;
+  if (!process.env.MONGODB_URI) {
+    throw new Error("Silakan definisikan MONGODB_URI di environment variables Anda.");
   }
+  await mongoose.connect(process.env.MONGODB_URI);
 }
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    if (!body.title || !body.slug || !body.body) {
-      return NextResponse.json(
-        { ok: false, error: "failed to fetch post" },
-        { status: 500 }
-      );
-    }
+    await dbConnect();
+    const data = await req.json();
 
-    await connectDB();
+    // Mengambil field 'gambar' dari request body
+    const { title, slug, author, excerpt, body, tags, gambar, published } = data;
 
-    if (body.published && !body.publishedAt) {
-      body.publishedAt = new Date();
-    }
+    const newPost = await Post.create({
+      title,
+      slug,
+      author,
+      excerpt,
+      body,
+      tags,
+      // Field 'gambar' dari API kita simpan ke 'coverImage' di model (berupa link string)
+      coverImage: gambar, 
+      published,
+      publishedAt: published ? new Date() : null,
+    });
 
-    const post = await Post.create(body);
-    return NextResponse.json({ ok: true, data: post }, { status: 201 });
-  } catch (err: unknown) {
-    console.error(err);
-    const mongoErr = err as MongoError;
-    const message =
-      mongoErr.code === 11000
-        ? "Slug already exists"
-        : "failed to create post";
-
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return NextResponse.json({ success: true, data: newPost }, { status: 201 });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
+}
+
+export async function GET() {
+  await dbConnect();
+  const posts = await Post.find({}).sort({ createdAt: -1 });
+  return NextResponse.json({ success: true, data: posts });
 }

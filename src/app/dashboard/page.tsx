@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 import Link from "next/link";
 
 interface Post{
@@ -14,6 +15,7 @@ interface Post{
     body:string;
     author:string;
     createdAt:string;
+    coverImage:string;
 }
 
 export default function DashboardPage(){
@@ -24,12 +26,13 @@ export default function DashboardPage(){
     const [slug, setSlug] = useState("");
     const [body, setBody] = useState("");
     const [author, setAuthor]= useState("");
+    const [gambar, setGambar] = useState("");
 
     useEffect(()=>{
         fetch('/api/posts')
         .then((res)=> res.json())
         .then((data)=> {
-            if(data.ok) setPosts(data.data);
+            if(data.success) setPosts(data.data);
         })
         .finally(()=>setLoading(false));
     },[]);
@@ -41,16 +44,17 @@ export default function DashboardPage(){
         const res = await fetch("/api/posts", {
             method:"POST",
             headers:{ "Content-Type":"application/json"},
-            body:JSON.stringify({title,slug, body, author}),
+            body:JSON.stringify({title, slug, body, author, gambar}),
         });
         const data = await res.json();
 
-        if(data.ok){
+        if(data.success){
             setPosts([data.data, ...posts]);
             settitle('');
             setBody('');
             setSlug('');
             setAuthor('');
+            setGambar('');
         } else{
             alert("error: "+ data.error);
         }
@@ -60,7 +64,7 @@ export default function DashboardPage(){
         if(!confirm("yakin hapus post ini?")) return ;
         const res = await fetch(`/api/posts/${slug}`, {"method":"DELETE"});
         const data = await res.json();
-        if(data.ok){
+        if(data.success){
             setPosts(posts.filter((p)=> p.slug !== slug));
         } else{
             alert("Error hapus : "+data.error);
@@ -101,6 +105,14 @@ export default function DashboardPage(){
                         </li>
                         <li>
                             <input 
+                            type="text" 
+                            placeholder="Link Gambar (URL)"
+                            value={gambar}
+                            onChange={(e)=> setGambar(e.target.value)}
+                            />
+                        </li>
+                        <li>
+                            <input 
                             type="text" name="" id="" 
                             placeholder="Author"
                             value={author}
@@ -122,6 +134,7 @@ export default function DashboardPage(){
                     <thead>
                     <tr>
                         <th>No</th>
+                        <th>Preview</th>
                         <th>Judul</th>
                         <th>author</th>
                         <th colSpan={3}>Action</th>
@@ -131,6 +144,20 @@ export default function DashboardPage(){
                     {posts.map((post)=>(
                         <tr key={post._id}>
                             <td>1</td>
+                            <td>
+                                {post.coverImage ? (
+                                    <Image 
+                                        src={post.coverImage} 
+                                        alt={post.title} 
+                                        width={50} 
+                                        height={50} 
+                                        style={{ objectFit: 'cover' }}
+                                        className="rounded-md"
+                                    />
+                                ) : (
+                                    <div className="w-[50px] h-[50px] bg-gray-200 rounded-md flex items-center justify-center text-[10px] text-gray-500">No Image</div>
+                                )}
+                            </td>
                             <td>{post.title}</td>
                             <td>{post.author}</td>
                             <td>
