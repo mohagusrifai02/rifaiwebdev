@@ -109,6 +109,7 @@ nav ul li a{
   }
   nav .title .ikon{
     display: block;
+    color: #064e3b; /* Warna ikon hijau yang kontras */
   }
   nav .list{
     flex-direction: column;
