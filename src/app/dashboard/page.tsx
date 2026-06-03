@@ -4,7 +4,8 @@ import ProtextedRoute from "../../../components/protextedroute"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faRightFromBracket, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,6 +28,7 @@ export default function DashboardPage(){
     const [body, setBody] = useState("");
     const [author, setAuthor]= useState("");
     const [gambar, setGambar] = useState("");
+    const [showForm, setShowForm] = useState(false);
 
     useEffect(()=>{
         fetch('/api/posts')
@@ -80,13 +82,41 @@ export default function DashboardPage(){
         <ProtextedRoute>
             <div className="container-dashboard">
                 <div className="title-dashboard">
-                    <h3>Daftar Blog</h3>
-                    <div className="button-logout">
-                        <FontAwesomeIcon icon={faPlus} />
-                        <FontAwesomeIcon icon={faRightFromBracket} onClick={handleLogout}/>
+                    <h3>Dashboard Analytics</h3>
+                    <div className="header-actions">
+                        <button className="btn-toggle-form" onClick={() => setShowForm(!showForm)}>
+                            <FontAwesomeIcon icon={showForm ? faChevronUp : faPlus} />
+                            {showForm ? 'Close Form' : 'Create New Post'}
+                        </button>
+                        <div className="btn-logout" onClick={handleLogout}>
+                            <FontAwesomeIcon icon={faRightFromBracket} />
+                        </div>
                     </div>
                 </div>
-                <form action="" onSubmit={handleCreate}>
+
+                <div className="stats-grid">
+                    <div className="stat-card">
+                        <p>Total Articles</p>
+                        <h2>{posts.length}</h2>
+                    </div>
+                    <div className="stat-card" style={{borderColor: '#3b82f6'}}>
+                        <p>Platform Status</p>
+                        <h2>Active</h2>
+                    </div>
+                    <div className="stat-card" style={{borderColor: '#f59e0b'}}>
+                        <p>Projects</p>
+                        <h2>4</h2>
+                    </div>
+                </div>
+
+                <AnimatePresence>
+                {showForm && (
+                <motion.form 
+                    initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+                    animate={{ opacity: 1, height: 'auto', marginBottom: '3rem' }}
+                    exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                    style={{ overflow: 'hidden' }}
+                    onSubmit={handleCreate}>
                     <ul>
                         <li>
                             <input 
@@ -132,15 +162,18 @@ export default function DashboardPage(){
                             <button type="submit">Buat Post</button>
                         </li>
                     </ul>
-                </form>
+                </motion.form>
+                )}
+                </AnimatePresence>
+
                 <table>
                     <thead>
                     <tr>
                         <th>No</th>
                         <th>Preview</th>
                         <th>Judul</th>
-                        <th>author</th>
-                        <th colSpan={3}>Action</th>
+                        <th>Author</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -163,14 +196,11 @@ export default function DashboardPage(){
                             </td>
                             <td>{post.title}</td>
                             <td>{post.author}</td>
-                            <td>
-                                <Link href={`/dashboard/${post.slug}`}>Detail</Link>
-                            </td>
-                            <td>
-                                <Link href={`dashboard/${post.slug}/edit`}>Edit</Link>
-                            </td>
-                            <td>
-                                <span onClick={()=> handleDelete(post.slug)}>Delete</span>
+                            <td style={{ display: 'flex', gap: '10px' }}>
+                                <Link href={`dashboard/${post.slug}/edit`} className="badge-action badge-edit">Edit</Link>
+                                <button 
+                                    onClick={()=> handleDelete(post.slug)} 
+                                    className="badge-action badge-delete">Delete</button>
                             </td>
                         </tr>
                     ))}
