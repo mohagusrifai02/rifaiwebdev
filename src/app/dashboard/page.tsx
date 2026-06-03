@@ -100,6 +100,7 @@ export default function DashboardPage(){
                         <li>
                             <input 
                             type="text" name="" id=""
+                            placeholder="Slug (Contoh: judul-blog-baru)"
                             value={slug}
                             onChange={(e)=> setSlug(e.target.value)} />
                         </li>
@@ -121,6 +122,8 @@ export default function DashboardPage(){
                         </li>
                         <li>
                             <textarea name="" id=""
+                            placeholder="Tulis konten blog Anda di sini..."
+                            rows={10}
                             value={body}
                             onChange={(e)=> setBody(e.target.value)}
                             required></textarea>
@@ -130,7 +133,7 @@ export default function DashboardPage(){
                         </li>
                     </ul>
                 </form>
-                <table border={2} cellPadding={10} cellSpacing={0}>
+                <table>
                     <thead>
                     <tr>
                         <th>No</th>
@@ -141,9 +144,9 @@ export default function DashboardPage(){
                     </tr>
                     </thead>
                     <tbody>
-                    {posts.map((post)=>(
+                    {posts.map((post, index)=>(
                         <tr key={post._id}>
-                            <td>1</td>
+                            <td>{index + 1}</td>
                             <td>
                                 {post.coverImage ? (
                                     <Image 

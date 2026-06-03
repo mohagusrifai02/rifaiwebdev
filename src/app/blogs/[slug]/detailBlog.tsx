@@ -39,7 +39,7 @@ export default function SingleBlog ({ initialPost }: { initialPost: Post }) {
                         width={1000}
                         height={500}
                         priority
-                        style={{ width: '100%', height: 'auto', borderRadius: '20px', marginBottom: '20px' }}
+                        style={{ width: '100%', height: '400px', objectFit: 'cover', borderRadius: '30px', marginBottom: '30px' }}
                     />
                 )}
                 <h1>{post.title}</h1>
