@@ -4,7 +4,6 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 
 export default function About(){
-
     return(
         <>
             <div className="container-about">
@@ -24,6 +23,7 @@ export default function About(){
                         />
                         <div className="overlay"></div>
                     </motion.div>
+                    
                     <motion.div
                     initial= {{opacity:0, scale:0.8}}
                     whileInView = {{ opacity:1, scale:1 }}
@@ -34,7 +34,6 @@ export default function About(){
                             <h2>About Me</h2>
                         </div>
                         <ul>
-                            <li>Saya membuka berbagai jasa yang berkaitan dengan software, yaitu:</li>
                             <li>1. Pembuatan Landing Page dan WebApp</li>
                             <li>2. Penjualan berbagai jenis WebApp</li>
                             <li>3. Kelas belajar web design dan Pemrograman</li>

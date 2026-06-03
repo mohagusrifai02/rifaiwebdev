@@ -36,8 +36,21 @@ a {
 }
 
 body{
-  background-color: #ededed;
+  background-color: #f1f5f9;
   position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#94a3b8 0.8px, transparent 0.8px);
+  background-size: 32px 32px;
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* navbar */
@@ -121,12 +134,29 @@ nav ul li a{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  background-color: #ffffff;
+  gap: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
   color: #171717;
-  padding: 20px 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 60px 40px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
   z-index: 1;
+  border-radius: 40px;
+  border: 1px solid #dcfce7;
+  position: relative;
+  overflow: hidden;
+}
+
+.container-home .title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(90deg, #bbf7d0 0%, #86efac 50%, #4ade80 100%);
+  clip-path: ellipse(80% 50% at 50% 100%);
+  opacity: 0.5;
+  z-index: -1;
 }
 .container-home .blob{
   position: absolute;
