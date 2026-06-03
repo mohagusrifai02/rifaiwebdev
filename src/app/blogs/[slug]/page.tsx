@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import SingleBlog from "./detailBlog";
+import Image from "next/image";
 
 export async function generateMetadata({params} : {params: {slug: string}}): Promise<Metadata>{
     try {
@@ -9,7 +10,6 @@ export async function generateMetadata({params} : {params: {slug: string}}): Pro
                 cache: "no-store"
                 });
         const post = await res.json();
-        console.log("Post data:", post);
 
     return{
         title:post.data.title,
@@ -19,7 +19,7 @@ export async function generateMetadata({params} : {params: {slug: string}}): Pro
             description:post.data.body,
             images: [
                 {
-                url: `https://www.rifaiwebdev.net/animasi_programming_500kb.jpg`,
+                url: post.data.coverImage || `https://www.rifaiwebdev.net/animasi_programming_500kb.jpg`,
                 width: 1200,
                 height: 630,
                 alt: post.data.title,
@@ -28,7 +28,7 @@ export async function generateMetadata({params} : {params: {slug: string}}): Pro
             }
         }
     } catch (error) {
-        console.error("Failde to generated metadata:", error);  
+        console.error("Failed to generate metadata:", error);  
         return{
             title:'blog tidak ditemukan',
             description:'halaman blog ini tidak tersedia'
@@ -37,8 +37,26 @@ export async function generateMetadata({params} : {params: {slug: string}}): Pro
     
 }
 
-export default function Page(){
+export default async function Page({params} : {params: {slug: string}}){
+    const { slug } = params;
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${slug}`, {
+           next: { revalidate: 10 },
+           cache: "no-store"
+           });
+    const post = await res.json();
+
     return (
-    <SingleBlog />   
+        <div className="container-single">
+            {post.data?.coverImage && (
+                <Image 
+                    src={post.data.coverImage}
+                    alt={post.data.title}
+                    width={1000}
+                    height={500}
+                    style={{ width: '50%', height: 'auto', borderRadius: '20px', marginTop: '100px' }}
+                />
+            )}
+            <SingleBlog />   
+        </div>
     )
 }
